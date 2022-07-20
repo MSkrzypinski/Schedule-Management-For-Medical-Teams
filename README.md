@@ -11,3 +11,4 @@ I'm still working on it...
 * Moq
 * Fluent Assertions
 * MediatR
+* Swagger
