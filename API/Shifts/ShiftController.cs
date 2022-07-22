@@ -1,5 +1,6 @@
 ﻿using API.Shifts.Requests;
-using Application.Shifts.AddDriver;
+using Application.Shifts.AddMedicalWorkerToShift;
+using Application.Shifts.PublishShift;
 using Domain.ValueObjects.Enums;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -37,6 +38,19 @@ namespace API.Shifts
 
             return Ok(response);
         }
-      
+
+        [Authorize(Roles = "Coordinator")]
+        [HttpPost("PublishShift")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<ActionResult<Unit>> Publish(Guid shiftId)
+        {
+            var response = await _mediator.Send(new PublishShiftCommand()
+            {
+                ShiftId = shiftId
+            });
+
+            return Ok(response);
+        }
+
     }
 }

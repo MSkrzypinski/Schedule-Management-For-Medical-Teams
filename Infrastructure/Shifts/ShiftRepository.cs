@@ -19,6 +19,7 @@ namespace Infrastructure.Shifts
         {
             return await _scheduleManagementContext.Shifts
                 .Include(x=>x.MedicalTeam)
+                .ThenInclude(x=>x.InformationAboutTeam)
                 .Include(x=>x.Crew)
                 .Include(x=>x.Schedule)
                 .FirstOrDefaultAsync(x => x.Id.Equals(id));

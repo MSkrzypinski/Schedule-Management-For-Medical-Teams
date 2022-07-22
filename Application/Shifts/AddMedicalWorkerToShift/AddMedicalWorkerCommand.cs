@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Application.Shifts.AddDriver
+namespace Application.Shifts.AddMedicalWorkerToShift
 {
     public class AddMedicalWorkerCommand : IRequest<Unit>
     {
