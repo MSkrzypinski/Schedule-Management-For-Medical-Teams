@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace Application.Shifts.AddDriver
 {
-    public class AddMedicalWorkerCommandHandler : IRequestHandler<AddMedicalWorkerCommand, AddMedicalWorkerCommandResponse>
+    public class AddMedicalWorkerCommandHandler : IRequestHandler<AddMedicalWorkerCommand, Unit>
     {
         private readonly IMedicalWorkerRepository _medicalWorkerRepository;
         private readonly IShiftRepository _shiftRepository;
@@ -31,18 +31,18 @@ namespace Application.Shifts.AddDriver
             _userExecusionContextAccessor = userExecusionContextAccessor;
         }
 
-        public async Task<AddMedicalWorkerCommandResponse> Handle(AddMedicalWorkerCommand request, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(AddMedicalWorkerCommand request, CancellationToken cancellationToken)
         {
             var medicalWorker = await _medicalWorkerRepository.GetMedicalWorkerByIdIncludeAllPropertiesAsync(request.MedicalWorkerId);
             if (medicalWorker == null)
             {
-                return new AddMedicalWorkerCommandResponse("Medical worker is invalid", false);
+                throw new ArgumentNullException("Invalid medical worker");
             }
 
             var shift = await _shiftRepository.GetShiftByIdIncludeAllPropertiesAsync(request.ShiftId);
             if (shift == null)
             {
-                return new AddMedicalWorkerCommandResponse("Shift is invalid", false);
+                throw new ArgumentNullException("Invalid shift");
             }
 
             var authorizationResult = _authorizationService.AuthorizeAsync
@@ -50,19 +50,21 @@ namespace Application.Shifts.AddDriver
 
             if (!authorizationResult.Succeeded)
             {
-                return new AddMedicalWorkerCommandResponse("Authorization failed", false);
+                throw new UnauthorizedAccessException("Authorization failed");
             }
 
             if (request.MedicRole.Equals(MedicRole.Driver))
                 shift.AddOrChangeDriver(medicalWorker);
+
             else if (request.MedicRole.Equals(MedicRole.Manager))
                 shift.AddOrChangeDriver(medicalWorker);
+
             else
                 shift.AddCrewMember(medicalWorker);
 
             await _shiftRepository.UpdateAsync(shift);
 
-            return new AddMedicalWorkerCommandResponse($"{request.MedicRole} has been added", true);
+            return Unit.Value;
         }
     }
 }

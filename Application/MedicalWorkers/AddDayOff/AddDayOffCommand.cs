@@ -1,5 +1,4 @@
 ﻿using Application.Mapper.Dtos;
-using Application.Responses;
 using Domain.ValueObjects;
 using MediatR;
 using System;
@@ -8,7 +7,7 @@ using System.Text;
 
 namespace Application.MedicalWorkers.AddDayOff
 {
-    public class AddDayOffCommand : IRequest<AddDayOffCommandResponse>
+    public class AddDayOffCommand : IRequest<Unit>
     {
         public Guid MedicalWorkerId { get; set; }
         public DateTime Start { get; set; }

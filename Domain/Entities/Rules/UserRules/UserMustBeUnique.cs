@@ -17,7 +17,7 @@ namespace Domain.Entities.Rules.UserRules
       
             if (_userCounter.Count(x=>x.Email.Equals(email)).Result>0)
             {
-                throw new ApplicationException(Message);
+                throw new BusinessRuleException(Message);
             }
         }
     }

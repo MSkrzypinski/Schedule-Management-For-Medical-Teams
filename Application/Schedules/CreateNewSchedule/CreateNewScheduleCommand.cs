@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Application.Schedules.CreateNewSchedule
 {
-    public class CreateNewScheduleCommand : IRequest<CreateNewScheduleCommandResponse>
+    public class CreateNewScheduleCommand : IRequest<Guid>
     {
         public Guid MedicalTeamId { get; set; }
         public int MonthOfSchedule { get; set; }

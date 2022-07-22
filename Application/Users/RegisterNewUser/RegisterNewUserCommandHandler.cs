@@ -2,14 +2,16 @@
 using AutoMapper;
 using Domain.Entities;
 using Domain.ValueObjects;
+using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace Application.Users.RegisterNewUser
 {
-    public class RegisterNewUserCommandHandler : IRequestHandler<RegisterNewUserCommand, RegisterNewUserCommandResponse>
+    public class RegisterNewUserCommandHandler : IRequestHandler<RegisterNewUserCommand, Guid>
     {
         private readonly IUserRepository _userRepository;
         private readonly IMapper _mapper;
@@ -28,15 +30,16 @@ namespace Application.Users.RegisterNewUser
             _passwordHasher = passwordHasher;
         }
 
-        public async Task<RegisterNewUserCommandResponse> Handle(RegisterNewUserCommand request, CancellationToken cancellationToken)
+        public async Task<Guid> Handle(RegisterNewUserCommand request, CancellationToken cancellationToken)
         {
             var validator = new RegisterNewUserValidator();
             var validatorResult = await validator.ValidateAsync(request);
 
             if (!validatorResult.IsValid)
             {
-                return new RegisterNewUserCommandResponse(validatorResult);
+                throw new ValidationException("Validation failed");
             }
+
             var mapUser = _mapper.Map<Domain.Entities.User>(request);
             
             var hashedPassword = _passwordHasher.HashPassword(mapUser,request.Password.Value);
@@ -53,7 +56,7 @@ namespace Application.Users.RegisterNewUser
 
             await _userRepository.AddAsync(user);
 
-            return new RegisterNewUserCommandResponse(user.Id);
+            return user.Id;
         }
     }
 }

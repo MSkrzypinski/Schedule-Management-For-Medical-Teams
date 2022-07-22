@@ -3,6 +3,7 @@ using Application.Persistence;
 using AutoMapper;
 using Domain.Entities;
 using Domain.ValueObjects;
+using FluentValidation;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -12,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace Application.MedicalTeams.CreateNewMedicalTeam
 {
-    public class CreateNewMedicalTeamCommandHandler : IRequestHandler<CreateNewMedicalTeamCommand, CreateNewMedicalTeamCommandResponse>
+    public class CreateNewMedicalTeamCommandHandler : IRequestHandler<CreateNewMedicalTeamCommand, Guid>
     {
         private readonly IMedicalTeamRepository _medicalTeamRepository;
         private readonly ICoordinatorRepository _coordinatorRepository;
@@ -28,21 +29,21 @@ namespace Application.MedicalTeams.CreateNewMedicalTeam
             _genericCounter = genericCounter;
         }
 
-        public async Task<CreateNewMedicalTeamCommandResponse> Handle(CreateNewMedicalTeamCommand request, CancellationToken cancellationToken)
+        public async Task<Guid> Handle(CreateNewMedicalTeamCommand request, CancellationToken cancellationToken)
         {
             var validator = new CreateNewMedicalTeamCommandValidator();
             var validatorResult = await validator.ValidateAsync(request);
 
             if (!validatorResult.IsValid)
             {
-                return new CreateNewMedicalTeamCommandResponse(validatorResult);
+                throw new ValidationException("Validation failed");
             }
 
             var coordinator = await _coordinatorRepository.GetCoordinatorIncludeAllPropertiesAsync(request.CoordinatorId);
 
             if (coordinator == null)
             {
-                return new CreateNewMedicalTeamCommandResponse("Coordinator is invalid", false);
+                throw new ArgumentNullException("Invalid coordinator");
             }
 
             var informationAboutTeam = new InformationAboutTeam(request.Code,request.City,request.SizeOfTeam,request.MedicalTeamType);
@@ -51,7 +52,7 @@ namespace Application.MedicalTeams.CreateNewMedicalTeam
 
             await _medicalTeamRepository.AddAsync(medicalTeam);
 
-            return new CreateNewMedicalTeamCommandResponse(medicalTeam.Id);
+            return medicalTeam.Id;
         }
     }
 }

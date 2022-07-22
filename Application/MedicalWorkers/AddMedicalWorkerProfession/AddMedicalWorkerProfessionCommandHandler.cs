@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace Application.MedicalWorkers.AddMedicalWorkerProfession
 {
-    public class AddMedicalWorkerProfessionCommandHandler : IRequestHandler<AddMedicalWorkerProfessionCommand, AddMedicalWorkerProfessionCommandResponse>
+    public class AddMedicalWorkerProfessionCommandHandler : IRequestHandler<AddMedicalWorkerProfessionCommand, Unit>
     {
         private readonly IMedicalWorkerRepository _medicalWorkerRepository;
 
@@ -23,20 +23,20 @@ namespace Application.MedicalWorkers.AddMedicalWorkerProfession
             _medicalWorkerRepository = medicalWorkerRepository;
         }
 
-        public async Task<AddMedicalWorkerProfessionCommandResponse> Handle(AddMedicalWorkerProfessionCommand request, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(AddMedicalWorkerProfessionCommand request, CancellationToken cancellationToken)
         {
             var medicalWorker = await _medicalWorkerRepository.GetMedicalWorkerByIdIncludeAllPropertiesAsync(request.MedicalWorkerId);
 
             if (medicalWorker == null)
             {
-                return new AddMedicalWorkerProfessionCommandResponse("Medical worker is invalid",false);
+                throw new ArgumentNullException("Invalid medical worker");
             }
 
             medicalWorker.AddMedicalWorkerProfession(request.MedicalWorkerProfessionEnum);
 
             await _medicalWorkerRepository.UpdateAsync(medicalWorker);
 
-            return new AddMedicalWorkerProfessionCommandResponse($"Type {request.MedicalWorkerProfessionEnum} has been added", true);
+            return Unit.Value;
         }
     }
 }

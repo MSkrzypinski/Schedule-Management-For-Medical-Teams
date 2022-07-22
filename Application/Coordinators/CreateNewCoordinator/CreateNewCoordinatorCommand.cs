@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Application.Coordinators.CreateNewCoordinator
 {
-    public class CreateNewCoordinatorCommand : IRequest<CreateNewCoordinatorCommandResponse>
+    public class CreateNewCoordinatorCommand : IRequest<Guid>
     {
         public Guid UserId { get; set; }
     }

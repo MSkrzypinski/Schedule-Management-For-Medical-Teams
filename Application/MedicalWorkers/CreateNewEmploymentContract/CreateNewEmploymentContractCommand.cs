@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Application.MedicalWorkers.CreateNewEmploymentContract
 {
-    public class CreateNewEmploymentContractCommand : IRequest<CreateNewEmploymentContractCommandResponse>
+    public class CreateNewEmploymentContractCommand : IRequest<Unit>
     {
         public Guid MedicalWorkerId { get; set; }
         public Guid MedicalTeamId { get; set; }

@@ -25,7 +25,7 @@ namespace API.Schedules
         [HttpPost("AddNewSchedule")]
         [Authorize(Roles = "Coordinator")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<ActionResult<CreateNewScheduleCommandResponse>> CreateNewSchedule([FromBody] CreateNewScheduleCommand request)
+        public async Task<ActionResult<Guid>> CreateNewSchedule([FromBody] CreateNewScheduleCommand request)
         {
             var response = await _mediator.Send(request);
 

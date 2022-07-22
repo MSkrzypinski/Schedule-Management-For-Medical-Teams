@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Application.MedicalWorkers.CreateNewMedicalWorker
 {
-    public class CreateNewMedicalWorkerCommand : IRequest<CreateNewMedicalWorkerCommandResponse>
+    public class CreateNewMedicalWorkerCommand : IRequest<Guid>
     {
         public AddressDto Address {get;set;}
         public DateTime DateOfBirth { get; set; }

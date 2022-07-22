@@ -1,3 +1,4 @@
+using API.Framework;
 using Application;
 using Infrastructure;
 using Microsoft.AspNetCore.Builder;
@@ -60,7 +61,6 @@ namespace API
 
             });
 
-          
             services.AddMvc();
             services.AddScheduleManagementApplication(Configuration);
             services.AddScheduleManagementInfrastructureServices(Configuration);
@@ -79,6 +79,8 @@ namespace API
             app.UseAuthentication();
             app.UseRouting();
             app.UseAuthorization();
+
+            app.UseMiddleware<ExceptionHandlerMiddleware>();
 
             app.UseSwagger();
             app.UseSwaggerUI(c =>

@@ -8,6 +8,7 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Threading.Tasks;
 
 namespace API.MedicalWorkers
@@ -25,7 +26,7 @@ namespace API.MedicalWorkers
         [Authorize(Roles = "Coordinator")]
         [HttpPost("")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<ActionResult<CreateNewMedicalWorkerCommandResponse>> CreateNewMedicalWorker([FromBody] CreateNewMedicalWorkerRequest request)
+        public async Task<ActionResult<Guid>> CreateNewMedicalWorker([FromBody] CreateNewMedicalWorkerRequest request)
         {
             var response = await _mediator.Send(new CreateNewMedicalWorkerCommand() 
             {
@@ -40,7 +41,7 @@ namespace API.MedicalWorkers
         [Authorize(Roles = "Coordinator")]
         [HttpPost("AddMedicalWorkerProfession")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<ActionResult<AddMedicalWorkerProfessionCommandResponse>> AddMedicalWorkerProfession([FromBody] AddMedicalWorkerProfessionRequest request,[FromQuery] MedicalWorkerProfessionEnum medicalWorkerProfessionEnum)
+        public async Task<ActionResult<Unit>> AddMedicalWorkerProfession([FromBody] AddMedicalWorkerProfessionRequest request,[FromQuery] MedicalWorkerProfessionEnum medicalWorkerProfessionEnum)
         {
             var response = await _mediator.Send(new AddMedicalWorkerProfessionCommand()
             {
@@ -54,7 +55,7 @@ namespace API.MedicalWorkers
         [Authorize(Roles = "Coordinator")]
         [HttpPost("CreateNewEmploymentContract")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<ActionResult<AddMedicalWorkerProfessionCommandResponse>> CreateNewEmploymentContract([FromBody] AddEmploymentContractRequest request, [FromQuery] ContractType contractType, MedicRole medicRole,MedicalWorkerProfessionEnum medicalWorkerProfession )
+        public async Task<ActionResult<Unit>> CreateNewEmploymentContract([FromBody] AddEmploymentContractRequest request, [FromQuery] ContractType contractType, MedicRole medicRole,MedicalWorkerProfessionEnum medicalWorkerProfession )
         {
             var response = await _mediator.Send(new CreateNewEmploymentContractCommand()
             {
@@ -70,7 +71,7 @@ namespace API.MedicalWorkers
         [Authorize(Roles = "MedicalWorker")]
         [HttpPost("AddDayOff")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<ActionResult<AddDayOffCommandResponse>> AddDayOff([FromBody] AddDayOffCommand addDayOffCommand)
+        public async Task<ActionResult<Unit>> AddDayOff([FromBody] AddDayOffCommand addDayOffCommand)
         {
             var response = await _mediator.Send(addDayOffCommand);
 

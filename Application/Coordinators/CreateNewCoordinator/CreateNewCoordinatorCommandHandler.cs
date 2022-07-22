@@ -1,5 +1,6 @@
 ﻿using Application.Persistence;
 using Domain.Entities;
+using LanguageExt.Common;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Application.Coordinators.CreateNewCoordinator
 {
-    public class CreateNewCoordinatorCommandHandler : IRequestHandler<CreateNewCoordinatorCommand, CreateNewCoordinatorCommandResponse>
+    public class CreateNewCoordinatorCommandHandler : IRequestHandler<CreateNewCoordinatorCommand, Guid>
     {
         private readonly IUserRepository _userRepository;
         private readonly ICoordinatorRepository _coordinatorRepository;
@@ -25,20 +26,20 @@ namespace Application.Coordinators.CreateNewCoordinator
             _genericCounter = genericCounter;
         }
 
-        public async Task<CreateNewCoordinatorCommandResponse> Handle(CreateNewCoordinatorCommand request, CancellationToken cancellationToken)
+        public async Task<Guid> Handle(CreateNewCoordinatorCommand request, CancellationToken cancellationToken)
         {
             var user = await _userRepository.GetByIdAsync(request.UserId);
 
             if (user == null)
             {
-                return new CreateNewCoordinatorCommandResponse("Invalid Id",false);
+                throw new ArgumentNullException("Invalid user");
             }
 
             var coordinator = Coordinator.Create(user, _genericCounter);
 
             await _coordinatorRepository.AddAsync(coordinator);
 
-            return new CreateNewCoordinatorCommandResponse(coordinator.Id);
+            return coordinator.Id;
 
         }
     }

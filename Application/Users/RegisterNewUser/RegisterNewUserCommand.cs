@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Application.Users.RegisterNewUser
 {
-    public class RegisterNewUserCommand : IRequest<RegisterNewUserCommandResponse>
+    public class RegisterNewUserCommand : IRequest<Guid>
     {
         public NameDto Name { get; set; }
         public PasswordDto Password { get; set; }

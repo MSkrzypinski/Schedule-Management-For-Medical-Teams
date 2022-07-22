@@ -26,7 +26,7 @@ namespace API.Shifts
         [Authorize(Roles = "Coordinator")]
         [HttpPost("AddMedicalWorker")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<ActionResult<AddMedicalWorkerCommandResponse>> AddDriver([FromBody] AddMedicalWorkerRequest request,[FromQuery] MedicRole medicRole)
+        public async Task<ActionResult<Unit>> AddMedicalWorker([FromBody] AddMedicalWorkerRequest request,[FromQuery] MedicRole medicRole)
         {
             var response = await _mediator.Send(new AddMedicalWorkerCommand()
             {

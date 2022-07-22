@@ -7,7 +7,7 @@ using System.Text;
 
 namespace Application.MedicalWorkers.AddMedicalWorkerProfession
 {
-    public class AddMedicalWorkerProfessionCommand : IRequest<AddMedicalWorkerProfessionCommandResponse>
+    public class AddMedicalWorkerProfessionCommand : IRequest<Unit>
     {
         public Guid MedicalWorkerId { get; set; }
         public MedicalWorkerProfessionEnum MedicalWorkerProfessionEnum { get; set; }

@@ -12,7 +12,7 @@ using Application.Authorization;
 
 namespace Application.MedicalWorkers.CreateNewEmploymentContract
 {
-    public class CreateNewEmploymentContractCommandHandler : IRequestHandler<CreateNewEmploymentContractCommand, CreateNewEmploymentContractCommandResponse>
+    public class CreateNewEmploymentContractCommandHandler : IRequestHandler<CreateNewEmploymentContractCommand, Unit>
     {
         private readonly IMedicalWorkerRepository _medicalWorkerRepository;
         private readonly IMedicalTeamRepository _medicalTeamRepository;
@@ -32,18 +32,18 @@ namespace Application.MedicalWorkers.CreateNewEmploymentContract
             _userExecusionContextAccessor = userExecusionContextAccessor;
         }
 
-        public async Task<CreateNewEmploymentContractCommandResponse> Handle(CreateNewEmploymentContractCommand request, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(CreateNewEmploymentContractCommand request, CancellationToken cancellationToken)
         {
             var medicalWorker = await _medicalWorkerRepository.GetByIdAsync(request.MedicalWorkerId);
 
             if (medicalWorker == null)
             {
-                return new CreateNewEmploymentContractCommandResponse("User id is invalid", false);
+                throw new ArgumentNullException("Invalid user");
             }
 
             if (!medicalWorker.MedicalWorkerProfessions.Any(x => x.MedicalWorkerProfessionEnum.Equals(request.MedicalWorkerProfession)))
             {
-                return new CreateNewEmploymentContractCommandResponse("User doesn't have the requirement profession", false);
+                throw new UnauthorizedAccessException("User doesn't have the requirement profession");
             }
 
             var medicalTeam = await _medicalTeamRepository.GetByIdAsync(request.MedicalTeamId);
@@ -53,7 +53,7 @@ namespace Application.MedicalWorkers.CreateNewEmploymentContract
 
             if (!authorizationResult.Succeeded)
             {
-                return new CreateNewEmploymentContractCommandResponse("Authorization failed", false);
+                throw new UnauthorizedAccessException("Authorization failed");
             }
 
             var permissions = await _medicalWorkerRepository.GetPermissionToProfessionAsync(request.MedicalWorkerProfession);
@@ -67,14 +67,14 @@ namespace Application.MedicalWorkers.CreateNewEmploymentContract
 
             if (!permissionResult)
             {
-                return new CreateNewEmploymentContractCommandResponse("Medical worker doesn't have the requirement permission", false);
+                throw new UnauthorizedAccessException("Medical worker doesn't have the requirement permission");
             }
 
             medicalWorker.AddEmploymentContract(medicalTeam, request.ContractType, request.MedicRole, request.MedicalWorkerProfession);
             
             await _medicalWorkerRepository.UpdateAsync(medicalWorker);
 
-            return new CreateNewEmploymentContractCommandResponse("Employment contract has been added", true);
+            return Unit.Value;
         }
     }
 }

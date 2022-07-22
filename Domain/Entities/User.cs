@@ -37,7 +37,13 @@ namespace Domain.Entities
             UserRoles = new List<UserRole>(userRoles);
         }
 
-        public static User RegisterNewUser(Name name, Password password, PhoneNumber phoneNumber, Email email, IGenericCounter<User> userCounter, IEnumerable<UserRole> userRoles = null)
+        public static User RegisterNewUser(
+            Name name, 
+            Password password, 
+            PhoneNumber phoneNumber, 
+            Email email, 
+            IGenericCounter<User> userCounter, 
+            IEnumerable<UserRole> userRoles = null)
         {
             if (name == null)
                 throw new ArgumentException("Name cannot be null");

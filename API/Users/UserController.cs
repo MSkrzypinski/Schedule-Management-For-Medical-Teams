@@ -40,7 +40,7 @@ namespace API.Users
         [Authorize(Roles = "Coordinator")]
         [HttpPost("Register")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<ActionResult<RegisterNewUserCommandResponse>> RegisterNewUser([FromBody] RegisterNewUserCommand registerNewUserCommand)
+        public async Task<ActionResult<Guid>> RegisterNewUser([FromBody] RegisterNewUserCommand registerNewUserCommand)
         {
             var response = await _mediator.Send(registerNewUserCommand);
             return Ok(response);

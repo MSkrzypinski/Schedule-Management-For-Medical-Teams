@@ -24,7 +24,7 @@ namespace API.Coordinators
 
         [HttpPost("")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<ActionResult<CreateNewCoordinatorCommandResponse>> CreateNewCoordinator([FromBody] CreateNewCoordinatorCommand createNewCoordinatorCommand)
+        public async Task<ActionResult<Guid>> CreateNewCoordinator([FromBody] CreateNewCoordinatorCommand createNewCoordinatorCommand)
         {
             var response = await _mediator.Send(createNewCoordinatorCommand);
             return Ok(response);

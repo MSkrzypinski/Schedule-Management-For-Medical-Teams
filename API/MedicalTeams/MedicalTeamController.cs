@@ -24,7 +24,7 @@ namespace API.MedicalTeams
         [Authorize(Roles = "Coordinator")]
         [HttpPost("")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<ActionResult<CreateNewMedicalTeamCommandResponse>> CreateNewMedicalTeam([FromBody] CreateNewMedicalTeamRequest request,[FromQuery] MedicalTeamType medicalTeamType)
+        public async Task<ActionResult<Guid>> CreateNewMedicalTeam([FromBody] CreateNewMedicalTeamRequest request,[FromQuery] MedicalTeamType medicalTeamType)
         {
             var response = await _mediator.Send(new CreateNewMedicalTeamCommand()
             {

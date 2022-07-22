@@ -7,7 +7,7 @@ using System.Text;
 
 namespace Application.MedicalTeams.CreateNewMedicalTeam
 {
-    public class CreateNewMedicalTeamCommand : IRequest<CreateNewMedicalTeamCommandResponse>
+    public class CreateNewMedicalTeamCommand : IRequest<Guid>
     {
         public Guid CoordinatorId { get; set; }
         public string Code { get; set; }

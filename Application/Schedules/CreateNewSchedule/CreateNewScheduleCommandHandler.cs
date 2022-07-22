@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace Application.Schedules.CreateNewSchedule
 {
-    public class CreateNewScheduleCommandHandler : IRequestHandler<CreateNewScheduleCommand, CreateNewScheduleCommandResponse>
+    public class CreateNewScheduleCommandHandler : IRequestHandler<CreateNewScheduleCommand, Guid>
     {
         private readonly IScheduleRepository _scheduleRepository;
         private readonly IMedicalTeamRepository _medicalTeamRepository;
@@ -33,12 +33,12 @@ namespace Application.Schedules.CreateNewSchedule
             _userExecusionContextAccessor = userExecusionContextAccessor;
         }
 
-        public async Task<CreateNewScheduleCommandResponse> Handle(CreateNewScheduleCommand request, CancellationToken cancellationToken)
+        public async Task<Guid> Handle(CreateNewScheduleCommand request, CancellationToken cancellationToken)
         {
             var medicalTeam = await _medicalTeamRepository.GetByIdAsync(request.MedicalTeamId);
             if (medicalTeam == null)
             {
-                return new CreateNewScheduleCommandResponse("Medical team is invalid", false);
+                throw new ArgumentNullException("Invalid medical team");
             }
 
             var authorizationResult = _authorizationService.AuthorizeAsync
@@ -46,13 +46,13 @@ namespace Application.Schedules.CreateNewSchedule
 
             if (!authorizationResult.Succeeded)
             {
-                return new CreateNewScheduleCommandResponse("Authorization failed", false);
+                throw new UnauthorizedAccessException("Authorization failed");
             }
 
             var schedule = Schedule.Create(medicalTeam, new MonthAndYearOfSchedule(request.YearOfSchedule, request.MonthOfSchedule), _genericCounter);
             await _scheduleRepository.AddAsync(schedule);
 
-            return new CreateNewScheduleCommandResponse(schedule.Id,"Schedule has been created",true);
+            return schedule.Id;
         }
     }
 }

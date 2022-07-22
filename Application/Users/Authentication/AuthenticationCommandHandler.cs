@@ -15,6 +15,7 @@ using System.Threading;
 
 using System.Threading.Tasks;
 using Application.User.Authentication;
+using FluentValidation;
 
 namespace Application.Users.Authentication
 {
@@ -43,7 +44,7 @@ namespace Application.Users.Authentication
 
             if (!validatorResult.IsValid)
             {
-                return new AuthenticationResponse(validatorResult);
+                throw new ValidationException("Validaton failed");
             }
 
             var email = _mapper.Map<string, Email>(request.Email);
@@ -52,14 +53,14 @@ namespace Application.Users.Authentication
             
             if (user == null)
             {
-                return new AuthenticationResponse("Incorrect login or password", false);
+                throw new ArgumentNullException("Incorrect login or password");
             }
   
             var result = _passwordHasher.VerifyHashedPassword(user,user.Password.Value,request.Password);
 
             if (result == PasswordVerificationResult.Failed)
             {
-                return new AuthenticationResponse("Incorrect login or password", false);
+                throw new ArgumentException("Incorrect login or password");
             }
 
             var claims = new List<Claim>
