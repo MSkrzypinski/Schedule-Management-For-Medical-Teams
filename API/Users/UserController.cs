@@ -54,6 +54,7 @@ namespace API.Users
             var userDto = await _mediator.Send(new GetUserByIdQuery() {Id=id});
             return Ok(userDto);
         }
+
         [Authorize(Roles = "Coordinator")]
         [HttpGet("email/{email}")]
         [ProducesResponseType(StatusCodes.Status200OK)]

@@ -57,7 +57,7 @@ namespace Application.Shifts.AddMedicalWorkerToShift
                 shift.AddOrChangeDriver(medicalWorker);
 
             else if (request.MedicRole.Equals(MedicRole.Manager))
-                shift.AddOrChangeDriver(medicalWorker);
+                shift.AddOrChangeCrewManager(medicalWorker);
 
             else
                 shift.AddCrewMember(medicalWorker);

@@ -29,11 +29,11 @@ namespace Tests.DomainTests
 
             Action act = () =>
             {
-                UserMustBeUnique.Check(new Email("WARS"),mock);
-                  
+                UserMustBeUnique.Check(new Email("WARS"),mock);    
             };
+
             act.Should().Throw<ApplicationException>()
-                .WithMessage("User email must be unique");
+                .WithMessage("User must be unique");
         }
         [Test]
         public void NewUserRegistration_WithUniqueEmail_IsSuccessful()

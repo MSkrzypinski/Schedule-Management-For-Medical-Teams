@@ -38,7 +38,7 @@ namespace API.Shifts
 
             return Ok(response);
         }
-
+        
         [Authorize(Roles = "Coordinator")]
         [HttpPost("PublishShift")]
         [ProducesResponseType(StatusCodes.Status200OK)]

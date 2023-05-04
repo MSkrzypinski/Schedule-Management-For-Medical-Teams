@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Infrastructure.Migrations
 {
-    public partial class ScheduleManagementMigration : Migration
+    public partial class migration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -106,6 +106,7 @@ namespace Infrastructure.Migrations
 
             migrationBuilder.CreateTable(
                 name: "UserRoles",
+                schema: "users",
                 columns: table => new
                 {
                     RoleCode = table.Column<string>(type: "nvarchar(450)", nullable: false),
@@ -460,7 +461,8 @@ namespace Infrastructure.Migrations
                 name: "MedicalWorkerShift");
 
             migrationBuilder.DropTable(
-                name: "UserRoles");
+                name: "UserRoles",
+                schema: "users");
 
             migrationBuilder.DropTable(
                 name: "Shifts",

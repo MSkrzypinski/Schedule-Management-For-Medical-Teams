@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(ScheduleManagementContext))]
-    [Migration("20220718044118_ScheduleManagementMigration")]
-    partial class ScheduleManagementMigration
+    [Migration("20230130175743_migration")]
+    partial class migration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -699,7 +699,7 @@ namespace Infrastructure.Migrations
 
                             b1.HasKey("UserId", "Value");
 
-                            b1.ToTable("UserRoles");
+                            b1.ToTable("UserRoles", "users");
 
                             b1.WithOwner()
                                 .HasForeignKey("UserId");
