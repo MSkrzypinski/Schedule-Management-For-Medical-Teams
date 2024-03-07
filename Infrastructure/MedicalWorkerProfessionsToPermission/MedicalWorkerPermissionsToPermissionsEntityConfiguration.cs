@@ -1,5 +1,5 @@
-﻿using Domain.ValueObjects.Enums;
-using Infrastructure.MedicalWorkerProfessionsToPermission;
+﻿using Domain.ValueObjects;
+using Domain.ValueObjects.Enums;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;

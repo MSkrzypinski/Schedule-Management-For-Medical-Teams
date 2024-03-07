@@ -15,7 +15,9 @@ namespace Infrastructure.MedicalTeams
         {
             builder.ToTable("MedicalTeams","medicalTeams");
             builder.HasKey(x => x.Id);
-            
+
+            builder.Property(x => x.IsActive);
+
             builder.OwnsOne<InformationAboutTeam>("InformationAboutTeam", x =>
             {
                 x.Property(x=>x.Code).HasColumnName("TeamCode").IsRequired().HasMaxLength(15);

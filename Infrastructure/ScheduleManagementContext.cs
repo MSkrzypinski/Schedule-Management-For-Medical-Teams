@@ -4,7 +4,6 @@ using Domain.ValueObjects.Enums;
 using Infrastructure.Coordinators;
 using Infrastructure.MedicalTeams;
 using Infrastructure.MedicalWorkerProfessions;
-using Infrastructure.MedicalWorkerProfessionsToPermission;
 using Infrastructure.MedicalWorkers;
 using Infrastructure.Schedules;
 using Infrastructure.Shifts;

@@ -18,7 +18,6 @@ namespace Domain.Entities
         public Schedule Schedule { get; }
         public MedicalWorker Driver { get; private set; }
         public MedicalWorker Manager { get; private set; }
-        public bool IsPublished { get; private set; }
         public MedicalWorker CrewMember{ get; private set; }
         public readonly List<MedicalWorker> Crew;
         private Shift()
@@ -46,35 +45,35 @@ namespace Domain.Entities
        
         public void AddOrChangeDriver(MedicalWorker medicalWorker)
         {
-            NumberOfMedicsMustBeLessThanOrEqualToMaximum.Check(MedicalTeam, this.GetQuantityOfMedics() + 1);
+            //NumberOfMedicsMustBeLessThanOrEqualToMaximum.Check(MedicalTeam, this.GetQuantityOfMedics() + 1);
             MedicHaveContractForSpecificMedicTeam.Check(medicalWorker, MedicalTeam, MedicRole.Driver);
             DriverMustHaveAtLeastTwelveHoursBreakBeforeBeganTheNextShift.Check(medicalWorker, this);
             MedicCanWorkInThisTerm.Check(medicalWorker, this);
-
+            if (Driver != null)
+                Crew.Remove(Driver);
             Driver = medicalWorker;
-            Driver.Shifts.Add(this);
             Crew.Add(Driver);
         }
         public void AddCrewMember(MedicalWorker medicalWorker)
         {
             MedicHaveContractForSpecificMedicTeam.Check(medicalWorker, MedicalTeam, MedicRole.RegularMedic);
             MedicCanWorkInThisTerm.Check(medicalWorker, this);
-            NumberOfMedicsMustBeLessThanOrEqualToMaximum.Check(MedicalTeam, this.GetQuantityOfMedics() + 1);
-
+            //NumberOfMedicsMustBeLessThanOrEqualToMaximum.Check(MedicalTeam, this.GetQuantityOfMedics() + 1);
+            if (CrewMember != null)
+                Crew.Remove(CrewMember);
             CrewMember = medicalWorker;
-            CrewMember.Shifts.Add(this);
             Crew.Add(CrewMember);
         }
        
 
         public void AddOrChangeCrewManager(MedicalWorker medicalWorker)
         {
-            NumberOfMedicsMustBeLessThanOrEqualToMaximum.Check(MedicalTeam, this.GetQuantityOfMedics()+1);
+            //NumberOfMedicsMustBeLessThanOrEqualToMaximum.Check(MedicalTeam, this.GetQuantityOfMedics()+1);
             MedicHaveContractForSpecificMedicTeam.Check(medicalWorker, MedicalTeam, MedicRole.Manager);
             MedicCanWorkInThisTerm.Check(medicalWorker, this);
-
+            if (Manager != null)
+                Crew.Remove(Manager);
             Manager = medicalWorker;
-            Manager.Shifts.Add(this);
             Crew.Add(Manager);
         }
 
@@ -98,8 +97,9 @@ namespace Domain.Entities
                 throw new ArgumentException("Manager cannot be null");
 
             ToPublishShiftNumberOfMedicsMustBeEqualToSizeOfTeam.Check(this);
-
-            IsPublished = true;
+            CrewMember.Shifts.Add(this);
+            Driver.Shifts.Add(this);
+            Manager.Shifts.Add(this);
         }
         public static Shift Create(DateRange dateRange, MedicalTeam medicalTeam,Schedule schedule)
         {

@@ -45,20 +45,11 @@ namespace Application.Shifts.AddMedicalWorkerToShift
                 throw new ArgumentNullException("Invalid shift");
             }
 
-            var authorizationResult = _authorizationService.AuthorizeAsync
-                (_userExecusionContextAccessor.User, shift.MedicalTeam, new MustBeCoordinatorForThisTeamRequirement()).Result;
-
-            if (!authorizationResult.Succeeded)
-            {
-                throw new UnauthorizedAccessException("Authorization failed");
-            }
-
             if (request.MedicRole.Equals(MedicRole.Driver))
                 shift.AddOrChangeDriver(medicalWorker);
 
             else if (request.MedicRole.Equals(MedicRole.Manager))
                 shift.AddOrChangeCrewManager(medicalWorker);
-
             else
                 shift.AddCrewMember(medicalWorker);
 

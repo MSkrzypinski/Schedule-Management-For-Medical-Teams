@@ -24,7 +24,7 @@ namespace Application.Authorization
             var userId = context.User.FindFirst(x => x.Type == ClaimTypes.NameIdentifier).Value;
             var coordinator = await _coordinatorRepository.GetCoordinatorIncludeAllPropertiesByUserIdAsync(Guid.Parse(userId));
 
-            if (coordinator == null || !resource.Coordinator.Id.Equals(coordinator.Id))
+            if (coordinator == null || resource.Coordinator == null || !resource.Coordinator.Id.Equals(coordinator.Id))
             {
                 context.Fail();
                 return;

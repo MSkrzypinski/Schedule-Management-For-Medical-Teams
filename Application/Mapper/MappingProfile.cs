@@ -8,6 +8,7 @@ using Domain.ValueObjects;
 using Application.Mapper.Dtos;
 using Domain.ValueObjects.Enums;
 using Application.Users.RegisterNewUser;
+using Application.MedicalTeams.UpdateMedicalTeam;
 
 namespace Application.Mapper
 {
@@ -16,6 +17,8 @@ namespace Application.Mapper
         public MappingProfile()
         {
             CreateMap<Name, NameDto>().ReverseMap();
+            CreateMap<MedicalTeamDto, MedicalTeam>().ReverseMap();
+            CreateMap<MedicalWorkerDto, MedicalWorker>().ReverseMap();
             CreateMap<Password, PasswordDto>().ReverseMap();
             CreateMap<PhoneNumber, PhoneNumberDto>().ReverseMap();
             CreateMap<Email, EmailDto>().ReverseMap();
@@ -24,10 +27,10 @@ namespace Application.Mapper
             CreateMap<AuthenticationCommand, Email>().ForMember(x => x.Value, o => o.MapFrom(k => k.Email));
             CreateMap<string, Email>().ConstructUsing(x => new Email(x));
             CreateMap<RegisterNewUserCommand,Domain.Entities.User>();
-            CreateMap<Coordinator,CoordinatorDto>();
+            CreateMap<Coordinator,CoordinatorDto>().ReverseMap();
             CreateMap<AddressDto, Address>();
             CreateMap<MedicalWorkerProfessionDto, MedicalWorkerProfession>();
-            CreateMap<InformationAboutTeamDto, InformationAboutTeam>();
+            CreateMap<InformationAboutTeamDto, InformationAboutTeam>().ReverseMap();
             CreateMap<DayOffDto, DayOff>();
         }
     }

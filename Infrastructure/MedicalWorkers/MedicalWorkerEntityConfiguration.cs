@@ -16,6 +16,8 @@ namespace Infrastructure.MedicalWorkers
         {
             builder.ToTable("MedicalWorkers","medicalWorkers");
             builder.HasKey(x => x.Id);
+            
+            builder.Property(x => x.IsActive);
 
             builder.OwnsOne(x => x.Address,s=>
             {

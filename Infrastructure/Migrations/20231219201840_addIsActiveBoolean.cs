@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Infrastructure.Migrations
 {
-    public partial class migration : Migration
+    public partial class addIsActiveBoolean : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -51,7 +51,8 @@ namespace Infrastructure.Migrations
                     Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     Password = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -64,7 +65,8 @@ namespace Infrastructure.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -90,7 +92,8 @@ namespace Infrastructure.Migrations
                     HouseNumber = table.Column<int>(type: "int", nullable: true),
                     ApartamentNumber = table.Column<int>(type: "int", nullable: true),
                     Dateofbirth = table.Column<DateTime>(name: "Date of birth", type: "Date", nullable: false),
-                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -134,7 +137,8 @@ namespace Infrastructure.Migrations
                     City = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
                     SizeOfTeam = table.Column<int>(type: "int", nullable: true),
                     MedicalTeamType = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CoordinatorId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    CoordinatorId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -226,7 +230,6 @@ namespace Infrastructure.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     MedicalTeamId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    Published = table.Column<string>(type: "nvarchar(1)", nullable: false),
                     Year = table.Column<int>(type: "int", nullable: true),
                     Month = table.Column<int>(type: "int", nullable: true),
                     CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false)
@@ -255,7 +258,6 @@ namespace Infrastructure.Migrations
                     ScheduleId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     DriverId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     ManagerId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    Published = table.Column<string>(type: "nvarchar(1)", nullable: false),
                     CrewMemberId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
                 },
                 constraints: table =>

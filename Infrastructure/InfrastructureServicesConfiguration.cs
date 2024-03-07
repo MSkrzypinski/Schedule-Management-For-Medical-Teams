@@ -12,6 +12,8 @@ using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Newtonsoft.Json;
+using Microsoft.AspNetCore.Identity;
 
 namespace Infrastructure
 {
@@ -20,9 +22,18 @@ namespace Infrastructure
         public static IServiceCollection AddScheduleManagementInfrastructureServices(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddDbContext<ScheduleManagementContext>(options =>
+            {
                 options.UseSqlServer(configuration.
-                GetConnectionString("ScheduleManagementConnectionString")));
+                    GetConnectionString("ScheduleManagementConnectionString"));
 
+                options.UseSqlServer(configuration.
+                    GetConnectionString("ScheduleManagementConnectionString"),
+                    provideroptions =>
+                    {
+                        provideroptions.CommandTimeout(180);
+                    });
+            });
+            
             services.AddScoped(typeof(IBaseRepository<>), typeof(BaseRepository<>));
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<ICoordinatorRepository, CoordinatorRepository>();

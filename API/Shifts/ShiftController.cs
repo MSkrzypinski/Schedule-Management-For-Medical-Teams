@@ -1,6 +1,9 @@
-﻿using API.Shifts.Requests;
+﻿using Application.Mapper.Dtos;
 using Application.Shifts.AddMedicalWorkerToShift;
+using Application.Shifts.GetShiftsByMonthAndYearAndUserId;
+using Application.Shifts.GetShiftsByScheduleId;
 using Application.Shifts.PublishShift;
+using Domain.Entities;
 using Domain.ValueObjects.Enums;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -24,17 +27,12 @@ namespace API.Shifts
             _mediator = mediator;
         }
 
-        [Authorize(Roles = "Coordinator")]
-        [HttpPost("AddMedicalWorker")]
+        //[Authorize(Roles = "Coordinator")]
+        [HttpPut("AddMedicalWorkerToShift")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<ActionResult<Unit>> AddMedicalWorker([FromBody] AddMedicalWorkerRequest request,[FromQuery] MedicRole medicRole)
+        public async Task<ActionResult<Unit>> AddMedicalWorker([FromBody] AddMedicalWorkerCommand request)
         {
-            var response = await _mediator.Send(new AddMedicalWorkerCommand()
-            {
-                ShiftId= request.ShiftId,
-                MedicalWorkerId=request.MedicalWorkerId,
-                MedicRole = medicRole
-            });
+            var response = await _mediator.Send(request);
 
             return Ok(response);
         }
@@ -51,6 +49,21 @@ namespace API.Shifts
 
             return Ok(response);
         }
+        [HttpGet("getByScheduleId/{scheduleId}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<ActionResult<IList<Shift>>> GetShiftsByScheduleId(Guid scheduleId)
+        {
+            var response = await _mediator.Send(new GetShiftsByScheduleIdQuery() {ScheduleId = scheduleId});
 
+            return Ok(response);
+        }
+         [HttpGet("GetShiftsByMonthAndYearAndUserId")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<ActionResult<IList<Shift>>> GetShiftsByMonthAndYearAndUserId([FromQuery] GetShiftsByMonthAndYearAndUserIdQuery request)
+        {
+            var response = await _mediator.Send(request);
+
+            return Ok(response);
+        }
     }
 }

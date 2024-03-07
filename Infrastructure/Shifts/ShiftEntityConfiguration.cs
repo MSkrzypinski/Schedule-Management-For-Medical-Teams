@@ -21,7 +21,6 @@ namespace Infrastructure.Shifts
                });
 
             builder.HasOne(x => x.MedicalTeam);
-            builder.Property(x => x.IsPublished).HasColumnName("Published").HasConversion<string>().IsRequired();
 
             builder.HasOne(x => x.CrewMember);
             builder.HasOne(x => x.Driver);

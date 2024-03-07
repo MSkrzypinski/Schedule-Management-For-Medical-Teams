@@ -9,10 +9,10 @@ namespace Domain.ValueObjects
 {
     public class InformationAboutTeam : ValueObject
     { 
-        public string Code { get; }
-        public string City { get; }
-        public int SizeOfTeam { get; }
-        public MedicalTeamType MedicalTeamType { get; }
+        public string Code { get; set; }
+        public string City { get; set; }
+        public int SizeOfTeam { get; set; }
+        public MedicalTeamType MedicalTeamType { get; set; }
 
         private InformationAboutTeam()
         {

@@ -38,13 +38,13 @@ namespace Application.MedicalWorkers.AddDayOff
                 throw new ArgumentNullException("Invalid medical worker");
             }
 
-            var authorizationResult = _authorizationService.AuthorizeAsync
+            /*var authorizationResult = _authorizationService.AuthorizeAsync
                 (_userExecusionContextAccessor.User, medicalWorker, new UserMustBeThisMedicalWorkerRequirement()).Result;
 
             if (!authorizationResult.Succeeded)
             {
                 throw new UnauthorizedAccessException("Authorization failed");
-            }
+            }*/
 
             medicalWorker.AddDayOff(request.Start, request.End);
 

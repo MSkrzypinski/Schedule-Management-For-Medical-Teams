@@ -14,6 +14,7 @@ namespace Domain.Entities
         public Guid Id { get; }
         public User User { get; }
         public List<MedicalTeam> MedicalTeams { get; }
+        public bool IsActive {get;set;}
         private Coordinator()
         {
             //For EF
@@ -23,6 +24,7 @@ namespace Domain.Entities
             Id = Guid.NewGuid();
             User = user;
             MedicalTeams = new List<MedicalTeam>();
+            IsActive = true;
 
             User.UserRoles.Add(UserRole.Coordinator()); 
         }

@@ -15,7 +15,6 @@ namespace Infrastructure.Schedules
             builder.ToTable("Schedules", "schedules");
 
             builder.HasOne(x => x.MedicalTeam);
-            builder.Property(x => x.IsPublished).HasColumnName("Published").HasConversion<string>().IsRequired();
 
             builder.OwnsOne(x => x.MonthAndYearOfSchedule, x =>
                {

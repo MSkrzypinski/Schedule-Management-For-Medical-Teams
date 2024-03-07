@@ -46,6 +46,11 @@ namespace Application.MedicalWorkers.CreateNewEmploymentContract
                 throw new UnauthorizedAccessException("User doesn't have the requirement profession");
             }
 
+            if (!medicalWorker.MedicalWorkerProfessions.Any(x => x.MedicalWorkerProfessionEnum.Equals(request.MedicalWorkerProfession)))
+            {
+                throw new UnauthorizedAccessException("User doesn't have the requirement profession");
+            }
+
             var medicalTeam = await _medicalTeamRepository.GetByIdAsync(request.MedicalTeamId);
 
             var authorizationResult = _authorizationService.AuthorizeAsync

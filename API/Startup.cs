@@ -20,10 +20,19 @@ namespace API
             Configuration = configuration;
         }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            
+            var  MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+            services.AddCors(options =>
+            {
+                options.AddPolicy(name: MyAllowSpecificOrigins,
+                                builder =>
+                                {
+                                    builder.WithOrigins("https://localhost:3000","https://localhost:3000")
+                                                .AllowAnyMethod()
+                                                .AllowAnyHeader().AllowAnyOrigin();
+                                });
+            });
             services.AddSwaggerGen(c =>
             {
                 c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
@@ -60,8 +69,10 @@ namespace API
                 });
 
             });
-
+            
             services.AddMvc();
+            services.AddControllers().AddNewtonsoftJson(x =>
+                x.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
             services.AddScheduleManagementApplication(Configuration);
             services.AddScheduleManagementInfrastructureServices(Configuration);
         }
@@ -73,6 +84,8 @@ namespace API
             {
                 app.UseDeveloperExceptionPage();
             }
+            
+            app.UseCors("_myAllowSpecificOrigins");
 
             app.UseHttpsRedirection();
 

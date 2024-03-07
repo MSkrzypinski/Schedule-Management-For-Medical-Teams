@@ -10,5 +10,7 @@ namespace Application.Persistence
     {
         Task<Coordinator> GetCoordinatorIncludeAllPropertiesAsync(Guid id);
         Task<Coordinator> GetCoordinatorIncludeAllPropertiesByUserIdAsync(Guid userId);
+        Task<IEnumerable<MedicalTeam>> GetAllMedicalTeamsAssignedToCoordinatorByUserId(Guid userId);
+
     }
 }

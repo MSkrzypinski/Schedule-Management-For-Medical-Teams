@@ -6,6 +6,7 @@ using Domain.Entities;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Domain.ValueObjects;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using Microsoft.AspNetCore.Identity;
 
 namespace Infrastructure.Users
 {
@@ -45,7 +46,7 @@ namespace Infrastructure.Users
                 x.Property<string>("Value").HasColumnName("RoleCode");
                 x.HasKey("UserId", "Value");
             });
-            
+
         }
     }
 }

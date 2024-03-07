@@ -3,6 +3,7 @@ using Application.User.Authentication;
 using Application.User.GetUser;
 using Application.User.GetUser.GetUserByEmail;
 using Application.User.GetUserById.GetUser;
+using Application.Users.GetUser.GetAllUnassignedUsersToMedicalWorker;
 using Application.Users.RegisterNewUser;
 using Domain.ValueObjects;
 
@@ -37,7 +38,7 @@ namespace API.Users
             return Ok(response);
         }
 
-        [Authorize(Roles = "Coordinator")]
+        //[Authorize(Roles = "Coordinator")]
         [HttpPost("Register")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<Guid>> RegisterNewUser([FromBody] RegisterNewUserCommand registerNewUserCommand)
@@ -46,7 +47,7 @@ namespace API.Users
             return Ok(response);
         }
 
-        [Authorize(Roles = "Coordinator")]
+        //[Authorize(Roles = "Coordinator")]
         [HttpGet("id/{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<UserDto>> GetUserById(Guid id)
@@ -55,13 +56,21 @@ namespace API.Users
             return Ok(userDto);
         }
 
-        [Authorize(Roles = "Coordinator")]
+        //[Authorize(Roles = "Coordinator")]
         [HttpGet("email/{email}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<UserDto>> GetUserByEmail(string email)
         {
             var userDto = await _mediator.Send(new GetUserByEmailQuery() { Email = new Email(email) });
             return Ok(userDto);
+        }
+        //[Authorize(Roles = "Coordinator")]
+        [HttpGet("unassignedUsers/{role}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<ActionResult<IEnumerable<UserDto>>> GetAllUnassugnedUsersToSelectedRole(string role)
+        {
+            var usersDto = await _mediator.Send(new GetAllUnassugnedUsersToSelectedRoleQuery() { Role = role });
+            return Ok(usersDto);
         }
     }
 }

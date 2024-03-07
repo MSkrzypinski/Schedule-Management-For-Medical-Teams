@@ -6,8 +6,8 @@ using System.Text;
 
 namespace Application.Coordinators.GetCoordinator.GetCoordinatorById
 {
-    public class GetCoordinatorByIdQuery : IRequest<CoordinatorDto>
+    public class GetCoordinatorByUserIdQuery : IRequest<CoordinatorDto>
     {
-        public Guid Id { get; set; }
+        public Guid UserId { get; set; }
     }
 }

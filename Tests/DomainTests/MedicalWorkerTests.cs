@@ -198,27 +198,29 @@ namespace Tests.DomainTests
             var medicalWorker = new MedicalWorkerBuilder().Build();
 
             medicalWorker.AddDayOff(
-                new DateTime(DateTime.Now.Year, DateTime.Now.Month+1, 2, 19, 00, 00), 
-                new DateTime(DateTime.Now.Year, DateTime.Now.Month+1, 3, 19, 00, 00));
+                new DateTime(DateTime.Now.Year, DateTime.Now.Month, 2, 19, 00, 00).AddMonths(1), 
+                new DateTime(DateTime.Now.Year, DateTime.Now.Month, 3, 19, 00, 00).AddMonths(1));
 
             medicalWorker.AddDayOff(
-                new DateTime(DateTime.Now.Year, DateTime.Now.Month+1, 1, 19, 00, 00), 
-                new DateTime(DateTime.Now.Year, DateTime.Now.Month+1, 5, 19, 00, 00));
+                new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1, 19, 00, 00).AddMonths(1), 
+                new DateTime(DateTime.Now.Year, DateTime.Now.Month, 5, 19, 00, 00).AddMonths(1));
 
             medicalWorker.AddDayOff(
-                new DateTime(DateTime.Now.Year, DateTime.Now.Month+1, 1, 19, 00, 00), 
-                new DateTime(DateTime.Now.Year, DateTime.Now.Month+1, 3, 19, 00, 00));
+                new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1, 19, 00, 00).AddMonths(1), 
+                new DateTime(DateTime.Now.Year, DateTime.Now.Month, 3, 19, 00, 00).AddMonths(1));
 
             medicalWorker.AddDayOff(
-                new DateTime(DateTime.Now.Year, DateTime.Now.Month+1, 3, 19, 00, 00), 
-                new DateTime(DateTime.Now.Year, DateTime.Now.Month+1, 7, 19, 00, 00));
+                new DateTime(DateTime.Now.Year, DateTime.Now.Month, 3, 19, 00, 00).AddMonths(1), 
+                new DateTime(DateTime.Now.Year, DateTime.Now.Month, 7, 19, 00, 00).AddMonths(1));
 
 
             medicalWorker.DaysOff
                 .Should()
                 .HaveCount(1)
                 .And
-                .Contain(new DayOff(new DateTime(DateTime.Now.Year, DateTime.Now.Month+1, 1, 19, 00, 00), new DateTime(DateTime.Now.Year, DateTime.Now.Month+1, 7, 19, 00, 00)));
+                .Contain(
+                    new DayOff(new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1, 19, 00, 00).AddMonths(1), 
+                        new DateTime(DateTime.Now.Year, DateTime.Now.Month, 7, 19, 00, 00).AddMonths(1)));
         }
     }
 }

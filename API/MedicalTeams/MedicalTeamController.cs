@@ -1,4 +1,7 @@
-﻿using Application.MedicalTeams.CreateNewMedicalTeam;
+﻿using Application.Mapper.Dtos;
+using Application.MedicalTeams.CreateNewMedicalTeam;
+using Application.MedicalTeams.UpdateMedicalTeam;
+using Application.User.GetUser.GetUserByEmail;
 using Domain.ValueObjects.Enums;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -11,31 +14,34 @@ using System.Threading.Tasks;
 
 namespace API.MedicalTeams
 {
-    [Route("user/[controller]")]
+    [Route("[controller]")]
     [ApiController]
-    public class MedcialTeamController : Controller
+    public class MedicalTeamController : Controller
     {
         private readonly IMediator _mediator;
 
-        public MedcialTeamController(IMediator mediator)
+        public MedicalTeamController(IMediator mediator)
         {
             _mediator = mediator;
         }
         [Authorize(Roles = "Coordinator")]
-        [HttpPost("")]
+        [HttpPost("create")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<ActionResult<Guid>> CreateNewMedicalTeam([FromBody] CreateNewMedicalTeamRequest request,[FromQuery] MedicalTeamType medicalTeamType)
+        public async Task<ActionResult<Guid>> CreateNewMedicalTeam([FromBody] CreateNewMedicalTeamCommand request)
         {
-            var response = await _mediator.Send(new CreateNewMedicalTeamCommand()
-            {
-                CoordinatorId=request.CoordinatorId,
-                City = request.City,
-                Code = request.Code,
-                SizeOfTeam = request.SizeOfTeam,
-                MedicalTeamType = medicalTeamType
-            });
+            var response = await _mediator.Send(request);
 
             return Ok(response);
         }
+        //[Authorize(Roles = "Coordinator")]
+        [HttpPut("update")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<ActionResult<Guid>> UpdateMedicalTeam([FromBody] UpdateMedicalTeamCommand request)
+        {
+            var response = await _mediator.Send(request);
+
+            return Ok(response);
+        }
+        
     }
 }

@@ -10,7 +10,7 @@ namespace Domain.Entities.Rules.MedicalWorkerRules
 
         public static void Check(DateTime start,DateTime end)
         {
-            if ((start.Month != DateTime.Now.Month+1 || end.Month != DateTime.Now.Month+1))
+            if ((start.Month != DateTime.Now.AddMonths(1).Month || end.Month != DateTime.Now.AddMonths(1).Month))
             {
                 throw new ApplicationException(Message);
             }

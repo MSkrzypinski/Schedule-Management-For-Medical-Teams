@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Infrastructure.MedicalWorkerProfessionsToPermission
+namespace Domain.ValueObjects
 {
     public class MedicalWorkerProfessionsToPermissions : ValueObject
     {

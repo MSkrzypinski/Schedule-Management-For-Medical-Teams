@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(ScheduleManagementContext))]
-    [Migration("20230130175743_migration")]
-    partial class migration
+    [Migration("20231219201840_addIsActiveBoolean")]
+    partial class addIsActiveBoolean
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -26,6 +26,9 @@ namespace Infrastructure.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
 
                     b.Property<Guid?>("UserId")
                         .HasColumnType("uniqueidentifier");
@@ -46,6 +49,9 @@ namespace Infrastructure.Migrations
                     b.Property<Guid>("CoordinatorId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
                     b.HasKey("Id");
 
                     b.HasIndex("CoordinatorId");
@@ -62,6 +68,9 @@ namespace Infrastructure.Migrations
                     b.Property<DateTime>("DateOfBirth")
                         .HasColumnType("Date")
                         .HasColumnName("Date of birth");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
 
                     b.Property<Guid?>("UserId")
                         .HasColumnType("uniqueidentifier");
@@ -84,11 +93,6 @@ namespace Infrastructure.Migrations
                         .HasColumnType("datetime2")
                         .HasColumnName("CreationDate");
 
-                    b.Property<string>("IsPublished")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(1)")
-                        .HasColumnName("Published");
-
                     b.Property<Guid?>("MedicalTeamId")
                         .HasColumnType("uniqueidentifier");
 
@@ -110,11 +114,6 @@ namespace Infrastructure.Migrations
 
                     b.Property<Guid?>("DriverId")
                         .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("IsPublished")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(1)")
-                        .HasColumnName("Published");
 
                     b.Property<Guid?>("ManagerId")
                         .HasColumnType("uniqueidentifier");
@@ -151,6 +150,9 @@ namespace Infrastructure.Migrations
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("Email");
 
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50)
@@ -172,7 +174,7 @@ namespace Infrastructure.Migrations
                     b.ToTable("Users", "users");
                 });
 
-            modelBuilder.Entity("Infrastructure.MedicalWorkerProfessionsToPermission.MedicalWorkerProfessionsToPermissions", b =>
+            modelBuilder.Entity("Domain.ValueObjects.MedicalWorkerProfessionsToPermissions", b =>
                 {
                     b.Property<string>("MedicalWorkerProfession")
                         .HasColumnType("nvarchar(450)");

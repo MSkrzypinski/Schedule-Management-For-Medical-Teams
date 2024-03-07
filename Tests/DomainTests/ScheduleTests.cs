@@ -27,7 +27,7 @@ namespace Tests.DomainTests
 
             var schedule = ScheduleBuilder
                 .Create()
-                .AddMonthhAndYearOfSchedule(2022, 4)
+                .AddMonthhAndYearOfSchedule(DateTime.Now.Year, 4)
                 .InjectInterface(mock)
                 .Build();
 
@@ -48,7 +48,7 @@ namespace Tests.DomainTests
             {
                 new ScheduleBuilder()
                     .AddMedicalTeam(x=>x.AddInformationAboutTeam("Warsaw12_P", "Warsaw", 3, MedicalTeamType.P))
-                    .AddMonthhAndYearOfSchedule(2022, 3)
+                    .AddMonthhAndYearOfSchedule(DateTime.Now.Year, 3)
                     .Build()
             };
 
@@ -58,7 +58,7 @@ namespace Tests.DomainTests
                 .AddInformationAboutTeam("Warsaw12_P","Warsaw",3,MedicalTeamType.P)
                 .Build();
 
-            var monthAndYearOfSchedule = new MonthAndYearOfSchedule(2022, 3);
+            var monthAndYearOfSchedule = new MonthAndYearOfSchedule(DateTime.Now.Year, 3);
 
             Action act = () =>
             {
@@ -146,22 +146,7 @@ namespace Tests.DomainTests
                 .Throw<ArgumentException>()
                 .WithMessage("Month and year cannot be null");
         }
-        [Test]
-        public void Schedule_CannotBePublished_IfAllShiftsIsNotHadPublished_BreaksAllShiftsMustBePublishedRule()
-        {
-
-            var schedule = new ScheduleBuilder().Build();
-
-            Action action = () =>
-            {
-                AllShiftsMustBePublished.Check(schedule);
-            };
-
-            action
-                .Should()
-                .Throw<ApplicationException>()
-                .WithMessage("All shifts must be published");
-        }
+       
       
     }
 }

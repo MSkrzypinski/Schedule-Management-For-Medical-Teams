@@ -14,13 +14,14 @@ namespace Domain.Entities
     public class MedicalWorker : Entity
     {
         public Guid Id { get; set; }
-        public Address Address { get; }
+        public Address Address { get; set;}
         public DateTime DateOfBirth { get; }
-        public List<EmploymentContract> EmploymentContracts { get; }
+        public List<EmploymentContract> EmploymentContracts { get; set;}
         public User User { get; }
         public List<Shift> Shifts { get; }
         public List<DayOff> DaysOff { get; }
-        public List<MedicalWorkerProfession> MedicalWorkerProfessions { get; }
+        public List<MedicalWorkerProfession> MedicalWorkerProfessions { get; set;}
+        public bool IsActive {get;set;}
         public MedicalWorker()
         {
             //For EF
@@ -42,6 +43,7 @@ namespace Domain.Entities
             Shifts = new List<Shift>();
             DaysOff = new List<DayOff>();
             MedicalWorkerProfessions = new List<MedicalWorkerProfession>();
+            IsActive = true;
 
             User.UserRoles.Add(UserRole.MedicalWorker());
         }
@@ -65,8 +67,8 @@ namespace Domain.Entities
         }
         public void AddDayOff(DateTime start,DateTime end)
         {
-            DaysOffCannotBeAddedInTheLast10DaysOfMonth.Check();
-            DaysOffCanOnlyBeAddedForTheNextMonth.Check(start,end);
+            //DaysOffCannotBeAddedInTheLast10DaysOfMonth.Check();
+            //DaysOffCanOnlyBeAddedForTheNextMonth.Check(start,end);
 
             DaysOff.Add(DayOff.Create(start, end));
 

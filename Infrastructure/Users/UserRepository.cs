@@ -26,6 +26,12 @@ namespace Infrastructure.Users
 
             return await Task.FromResult(result);
         }
+         public async Task<IEnumerable<User>> GetAllUnassignedUsersToSelectedRole(string role)
+        {
+            return await _scheduleManagementContext.Users
+                .Where(x=>x.UserRoles.All(x=>x.Value != role))
+                .ToListAsync();
+        }
 
       
     }

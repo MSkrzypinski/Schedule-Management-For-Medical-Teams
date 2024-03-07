@@ -14,7 +14,6 @@ namespace Domain.Entities
     {
         public Guid Id { get; set; }
         public MedicalTeam MedicalTeam { get; }
-        public bool IsPublished { get; set; }
         public MonthAndYearOfSchedule MonthAndYearOfSchedule { get; }
         public DateTime Created { get; }
         public List<Shift> Shifts { get; }
@@ -26,7 +25,6 @@ namespace Domain.Entities
         {
             Id = Guid.NewGuid();
             MedicalTeam = medicalTeam;
-            IsPublished = false;
             Created = DateTime.UtcNow;
             MonthAndYearOfSchedule = monthAndYearOfSchedule;
             Shifts = new List<Shift>(GenerateShifts());
@@ -41,11 +39,7 @@ namespace Domain.Entities
             ScheduleMustBeOnlyOneForSpecificDateAndTeam.Check(medicalTeam,monthAndYearOfSchedule ,scheduleCounter);
             return new Schedule(medicalTeam,monthAndYearOfSchedule);
         }   
-        public void Publish()
-        {
-            AllShiftsMustBePublished.Check(this);
-            IsPublished = true;
-        }
+       
         private List<Shift> GenerateShifts()
         {
             List<Shift> shifts = new List<Shift>();

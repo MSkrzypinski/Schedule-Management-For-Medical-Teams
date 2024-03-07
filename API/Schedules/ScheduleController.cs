@@ -1,5 +1,6 @@
-﻿using API.MedicalWorkers.Requests;
-using Application.Schedules.CreateNewSchedule;
+﻿using Application.Schedules.CreateNewSchedule;
+using Application.Schedules.GetScheduleByMonthAndYearAndMedicalTeamId;
+using Domain.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -23,7 +24,7 @@ namespace API.Schedules
         }
 
         [HttpPost("AddNewSchedule")]
-        [Authorize(Roles = "Coordinator")]
+        //[Authorize(Roles = "Coordinator")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<Guid>> CreateNewSchedule([FromBody] CreateNewScheduleCommand request)
         {
@@ -31,6 +32,14 @@ namespace API.Schedules
 
             return Ok(response);
         }
-       
+        [HttpGet("GetScheduleByMonthAndYearAndMedicalTeamId")]
+        //[Authorize(Roles = "Coordinator")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<ActionResult<Schedule>> GetScheduleByMonthAndYearAndMedicalTeamId([FromQuery] GetScheduleByMonthAndYearAndMedicalTeamIdQuery request)
+        { 
+            var response = await _mediator.Send(request);
+
+            return Ok(response);
+        }
     }
 }

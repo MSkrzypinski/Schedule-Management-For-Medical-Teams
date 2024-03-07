@@ -1,7 +1,9 @@
 ﻿using Application.Coordinators.CreateNewCoordinator;
+using Application.Coordinators.GetAllMedicalTeamsAssignedToCoordinator;
 using Application.Coordinators.GetCoordinator.GetCoordinatorById;
 using Application.Mapper.Dtos;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -11,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace API.Coordinators
 {
-    [Route("user/[controller]")]
+    [Route("[controller]")]
     [ApiController]
     public class CoordinatorController : Controller
     {
@@ -29,12 +31,23 @@ namespace API.Coordinators
             var response = await _mediator.Send(createNewCoordinatorCommand);
             return Ok(response);
         }
-        [HttpGet("{id}", Name = "GetCoordinatorById")]
+        
+        //[Authorize(Roles = "Coordinator")]
+        [HttpGet("user/{userId}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<ActionResult<CoordinatorDto>> GetCoordinatorById(Guid id)
+        public async Task<ActionResult<CoordinatorDto>> GetCoordinatorByUserId(Guid userId)
         {
-            var coordinatorDto = await _mediator.Send(new GetCoordinatorByIdQuery() { Id = id });
+            var coordinatorDto = await _mediator.Send(new GetCoordinatorByUserIdQuery() { UserId = userId });
             return Ok(coordinatorDto);
         }
+        [HttpGet("get/medicalTeams")]
+        //[Authorize(Roles = "Coordinator")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<ActionResult<IEnumerable<MedicalTeamDto>>> GetMedicalTeamsByUserId(Guid userId)
+        {
+            var medicalTeamDtos = await _mediator.Send(new GetAllMedicalTeamsAssignedToCoordinatorQuery() { UserId = userId });
+            return Ok(medicalTeamDtos);
+        }
+
     }
 }

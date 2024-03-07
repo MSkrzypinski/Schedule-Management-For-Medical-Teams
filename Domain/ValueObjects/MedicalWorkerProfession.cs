@@ -16,7 +16,7 @@ namespace Domain.ValueObjects
 
         public MedicalWorkerProfession(MedicalWorkerProfessionEnum medicalWorkerProfessionEnum)
         {
-            MedicalWorkerProfessionEnum = medicalWorkerProfessionEnum;
+            MedicalWorkerProfessionEnum = medicalWorkerProfessionEnum;  
         }
         private MedicalWorkerProfession()
         {

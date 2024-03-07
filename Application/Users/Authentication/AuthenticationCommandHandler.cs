@@ -22,11 +22,13 @@ namespace Application.Users.Authentication
     public class AuthenticationCommandHandler : IRequestHandler<AuthenticationCommand, AuthenticationResponse>
     {
         private readonly IUserRepository _userRepository;
+        private readonly IMedicalWorkerRepository _medicalWorkerRepository;
         private readonly IMapper _mapper;
         private readonly IPasswordHasher<Domain.Entities.User> _passwordHasher;
         private readonly JwtConfig _jwtConfig;
         public AuthenticationCommandHandler
-            (IUserRepository userRepository, 
+            (IUserRepository userRepository,
+            IMedicalWorkerRepository medicalWorkerRepository,
             IMapper mapper, 
             IPasswordHasher<Domain.Entities.User> passwordHasher, 
             IOptions<JwtConfig> jwtConfig)
@@ -35,6 +37,7 @@ namespace Application.Users.Authentication
             _mapper = mapper;
             _passwordHasher = passwordHasher;
             _jwtConfig = jwtConfig.Value;
+            _medicalWorkerRepository = medicalWorkerRepository;
         }
 
         public async Task<AuthenticationResponse> Handle(AuthenticationCommand request, CancellationToken cancellationToken)
@@ -67,9 +70,10 @@ namespace Application.Users.Authentication
             {
                 new Claim(ClaimTypes.NameIdentifier,user.Id.ToString()),
                 new Claim(ClaimTypes.Name,$"{user.Name.FirstName} {user.Name.LastName}"),
+                new Claim("UserID",user.Id.ToString())
             };
             user.UserRoles.ForEach(x => claims.Add( new Claim(ClaimTypes.Role, x.Value)));
-
+ 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtConfig.Key));
             var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 

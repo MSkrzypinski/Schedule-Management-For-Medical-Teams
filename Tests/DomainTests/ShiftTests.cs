@@ -132,6 +132,8 @@ namespace Tests.DomainTests
         [TestCase("2022/03/04 19:00:00", "2022/03/05 07:00:00")]
         public void Shift_AddDriver_DriverNeedAtLeastTwelveHoursBreakBeforeTheNextShift_BreaksDriverMustHaveAtLeastTwelveHoursBreakBeforeBeganTheNextShiftRule(DateTime start,DateTime end)
         {
+            start = new DateTime(DateTime.Now.Year,start.Month,start.Day,start.Hour,start.Minute,start.Second);
+            end = new DateTime(DateTime.Now.Year,end.Month,end.Day,end.Hour,end.Minute,end.Second);
             var driver = new MedicalWorkerBuilder().AddMedicalWorkerProfession(new MedicalWorkerProfession(MedicalWorkerProfessionEnum.Paramedic)).Build();
             driver.AddEmploymentContract(new MedicalTeamBuilder().Build(), ContractType.BusinessToBusiness, MedicRole.Driver, MedicalWorkerProfessionEnum.Paramedic);
 
@@ -139,8 +141,10 @@ namespace Tests.DomainTests
 
             firstShift.AddOrChangeDriver(driver);
 
+            driver.Shifts.Add(firstShift);
+
             var secondShift = new ShiftBuilder()
-                .AddDateRange(new DateTime(2022, 3, 3, 18, 0, 0), new DateTime(2022, 3, 4, 08, 0, 0))
+                .AddDateRange(new DateTime(DateTime.Now.Year, 3, 3, 18, 0, 0), new DateTime(DateTime.Now.Year, 3, 4, 08, 0, 0))
                 .Build();
         
             Action action = () =>
@@ -276,7 +280,6 @@ namespace Tests.DomainTests
 
             shift.Publish();
 
-            shift.IsPublished.Should().BeTrue();
             shift.Driver.Shifts.Count.Should().Be(1);
             shift.Manager.Shifts.Count.Should().Be(1);
             shift.CrewMember.Shifts.Count.Should().Be(1);

@@ -17,6 +17,7 @@ namespace Domain.Entities
         public PhoneNumber PhoneNumber { get; }
         public Email Email { get; }
         public List<UserRole> UserRoles { get; }
+        public bool IsActive {get;set;}
 
         private User()
         {
@@ -31,6 +32,7 @@ namespace Domain.Entities
             PhoneNumber = phoneNumber;
             Email = email;
             UserRoles = new List<UserRole>();
+            IsActive = true;
         }
         private User(Name name, Password password, PhoneNumber phoneNumber, Email email, IEnumerable<UserRole> userRoles) : this(name,password,phoneNumber,email)
         {

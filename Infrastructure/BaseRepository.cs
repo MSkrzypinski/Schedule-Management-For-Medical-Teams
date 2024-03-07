@@ -39,6 +39,11 @@ namespace Infrastructure
             return await Task.FromResult(result);
         }
 
+        public async Task<IList<T>> GetAll()
+        {
+            return await _scheduleManagementContext.Set<T>().ToListAsync();
+        }
+
         public async Task<T> GetByIdAsync(Guid id)
         {
             return await _scheduleManagementContext.Set<T>().FindAsync(id);

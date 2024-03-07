@@ -12,18 +12,20 @@ namespace Domain.Entities
 {
     public class MedicalTeam : Entity
     {
-        public Guid Id { get; }
-        public InformationAboutTeam InformationAboutTeam { get; }
-        public Coordinator Coordinator { get; }
+        public Guid Id { get; set; }
+        public InformationAboutTeam InformationAboutTeam { get; set; }
+        public Coordinator Coordinator { get; set; }
+        public bool IsActive {get;set;}
         private MedicalTeam()
         {
             //For EF
         }
-        private MedicalTeam(InformationAboutTeam informationAboutTeam ,Coordinator coordinator)
+        private MedicalTeam(InformationAboutTeam informationAboutTeam, Coordinator coordinator)
         {
             Id = Guid.NewGuid();
             InformationAboutTeam = informationAboutTeam; 
             Coordinator = coordinator;
+            IsActive = true;
 
             Coordinator.MedicalTeams.Add(this);
         }

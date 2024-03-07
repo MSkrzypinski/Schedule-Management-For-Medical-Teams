@@ -17,7 +17,7 @@ namespace Domain.ValueObjects
         {
             if (month < 1 || month > 12)
                 throw new ApplicationException("Month must be in range 1-12");
-            if (year < DateTime.Now.Year || year > DateTime.Now.Year + 1)
+            if (year < DateTime.Now.Year || year > (DateTime.Now.Year + 1))
                 throw new ApplicationException($"Year must be {DateTime.Now.Year} or {DateTime.Now.Year+1}");
             Year = year;
             Month = month;
